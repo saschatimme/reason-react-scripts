@@ -133,7 +133,9 @@ module.exports = {
           /\.(js|jsx)(\?.*)?$/,
           /\.css$/,
           /\.json$/,
-          /\.svg$/
+          /\.svg$/,
+          /\.(re|ml)$/,
+          /\.(rei|mli)$/
         ],
         loader: 'url',
         query: {
@@ -179,6 +181,10 @@ module.exports = {
         query: {
           name: 'static/media/[name].[hash:8].[ext]'
         }
+      },
+      {
+         test: /\.(re|ml)$/,
+         loader: "bs"
       }
       // ** STOP ** Are you adding a new loader?
       // Remember to add the new extension(s) to the "url" loader exclusion list.

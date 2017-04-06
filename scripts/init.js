@@ -26,10 +26,11 @@ module.exports = function(appPath, appName, verbose, originalDirectory, template
 
   // Setup the script rules
   appPackage.scripts = {
-    'start': 'react-scripts start',
-    'build': 'react-scripts build',
-    'test': 'react-scripts test --env=jsdom',
-    'eject': 'react-scripts eject'
+    "bsb:build": "bsb -clean-world -make-world",
+    "bsb:watch": "bsb -clean-world -make-world -w",
+    "start": "bsb -clean-world -make-world && concurrently \"react-scripts start\" \"bsb -w\"",
+    "build": "bsb -clean-world -make-world && react-scripts build",
+    "test": "bsb -clean-world -make-world && concurrently \"react-scripts test --env=jsdom\" \"bsb -w\"",
   };
 
   fs.writeFileSync(
@@ -46,6 +47,14 @@ module.exports = function(appPath, appName, verbose, originalDirectory, template
   var templatePath = template ? path.resolve(originalDirectory, template) : path.join(ownPath, 'template');
   if (fs.existsSync(templatePath)) {
     fs.copySync(templatePath, appPath);
+    // update bsconfig name
+    var bsconfig = require(path.join(appPath, 'bsconfig.json'));
+    bsconfig.name = appName;
+
+    fs.writeFileSync(
+      path.join(appPath, 'bsconfig.json'),
+      JSON.stringify(bsconfig, null, 2)
+    );
   } else {
     console.error('Could not locate supplied template: ' + chalk.green(templatePath));
     return;
@@ -97,13 +106,37 @@ module.exports = function(appPath, appName, verbose, originalDirectory, template
   // or template is presetend (via --internal-testing-template)
   if (!isReactInstalled(appPackage) || template) {
     console.log('Installing react and react-dom using ' + command + '...');
-    console.log();
 
     var proc = spawn.sync(command, args, {stdio: 'inherit'});
     if (proc.status !== 0) {
       console.error('`' + command + ' ' + args.join(' ') + '` failed');
       return;
     }
+  }
+
+  // Install Reason stuff
+  var command;
+  var args;
+
+  // dependencies
+  if (useYarn) {
+    command = 'yarnpkg';
+    args = ['add'];
+  } else {
+    command = 'npm';
+    args = [
+      'install',
+      '--save',
+      verbose && '--verbose'
+    ].filter(function(e) { return e; });
+  }
+  args.push('concurrently', 'bs-platform', 'reason-react', 'reason-js', "https://github.com/BuckleTypes/bs-jest.git");
+  console.log('Installing reason-react and reason-js and bs-jest using ' + command + '...');
+
+  var proc = spawn.sync(command, args, {stdio: 'inherit'});
+  if (proc.status !== 0) {
+    console.error('`' + command + ' ' + args.join(' ') + '` failed');
+    return;
   }
 
   // Display the most elegant way to cd.
