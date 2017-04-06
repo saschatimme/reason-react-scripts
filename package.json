@@ -1,14 +1,14 @@
 {
   "name": "reason-react-scripts",
-  "version": "0.9.4",
-  "description": "Configuration and scripts for Create React App.",
-  "repository": "facebookincubator/create-react-app",
-  "license": "BSD-3-Clause",
+  "version": "0.1.0",
+  "description": "Configuration and scripts for Create React App with Reason.",
+  "repository": "saschatimme/reason-react-scripts",
+  "license": "BSD3",
   "engines": {
     "node": ">=4"
   },
   "bugs": {
-    "url": "https://github.com/facebookincubator/create-react-app/issues"
+    "url": "https://github.com/saschatimme/reason-react-scripts/issues"
   },
   "files": [
     "babelrc",
