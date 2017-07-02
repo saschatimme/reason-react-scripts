@@ -1,5 +1,4 @@
-**This is no longer maintained! Checkout https://github.com/rrdelaney/reason-scripts instead ** 
-
+**This is no longer maintained! Checkout https://github.com/rrdelaney/reason-scripts instead.** 
 
 # reason-react-scripts
 
