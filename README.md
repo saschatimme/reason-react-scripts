@@ -1,3 +1,6 @@
+**This is no longer maintained! Checkout https://github.com/rrdelaney/reason-scripts instead ** 
+
+
 # reason-react-scripts
 
 With this script you can easily use [Create React App](https://github.com/facebookincubator/create-react-app) to start your React project with [Reason](https://github.com/facebook/reason).
